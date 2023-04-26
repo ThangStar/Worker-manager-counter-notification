@@ -7,6 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.workermanagercounttime.workers.DownloadWorker
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,11 @@ class WorkerDownloadImageRepository @Inject constructor(@ApplicationContext val 
     override fun startDownload() {
         val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
             .setConstraints(constraints = constraint.build())
+
+            //send data from work request to worker
+            .setInputData(workDataOf(
+                "URI" to "this is uri"
+            ))
         workManager.enqueue(workRequest.build())
     }
 }
